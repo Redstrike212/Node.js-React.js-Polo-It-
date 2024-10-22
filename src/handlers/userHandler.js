@@ -5,6 +5,8 @@ const userSchema = Joi.object({
     name:   Joi.string().min(3).required(),
     username: Joi.string().min(3).required(),
     email: Joi.string().email().required(),
+    password: Joi.string().pattern(/^\d{6}&/).required(),
+    role: Joi.string().valid('admin', 'user').required()
 })
 
 
@@ -39,8 +41,8 @@ const createUserHandler = (req, res) => {
         const {error} = userSchema.validate(req.body)
         if(error) res.status(400).send(error.details[0].message);
 
-        const {name, username, email} = req.body;
-        const response = createUserController(name, username, email)
+        const {name, username, email, password, role} = req.body;
+        const response = createUserController(name, username, email, password, role)
 
         res.status(201).send(response)
     } catch (error) {
