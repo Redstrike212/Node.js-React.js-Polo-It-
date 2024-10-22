@@ -4,7 +4,8 @@ const   bcrypt = require('bcryptjs')
 const createUserController = async (name, username, email, password, role) => {
     const id = users.length + 1
     const hashPassword = await bcrypt.hash(password, 10)
-    const newUser = { id, name, username, email, password, role }
+    console.log(hashPassword)
+    const newUser = { id, name, username, email, password: hashPassword, role }
     users.push(newUser)
     return newUser
 }
