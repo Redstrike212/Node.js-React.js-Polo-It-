@@ -1,0 +1,26 @@
+{
+  "name": "nodejs-reactjs",
+  "version": "1.0.0",
+  "description": "Programa",
+  "main": "Index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node Index.js",
+    "dev": "nodemon Index.js"
+  },
+  "keywords": [
+    "Programa",
+    "node"
+  ],
+  "author": "Magno",
+  "license": "ISC",
+  "devDependencies": {
+    "nodemon": "^3.1.7"
+  },
+  "dependencies": {
+    "axios": "^1.7.7",
+    "dotenv": "^16.4.5",
+    "express": "^4.21.1",
+    "morgan": "^1.10.0"
+  }
+}
