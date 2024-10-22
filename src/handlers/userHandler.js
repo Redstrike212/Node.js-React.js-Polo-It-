@@ -1,6 +1,11 @@
 const { response } = require("express")
 const { createUserController, getAllUserController, getUserByNameController, getUserByIdController, updateUserController, deleteUserController } = require("../controllers/userControllers")
 const Joi = require('joi')
+const userSchema = Joi.object({
+    name:   Joi.string().min(3).required(),
+    username: Joi.string().min(3).required(),
+    email: Joi.string().email().required(),
+})
 
 
 const getAllUserHandler = (req, res) => {
@@ -31,8 +36,12 @@ const getOneHandler = (req, res) => {
 
 const createUserHandler = (req, res) => {
     try {
+        const {error} = userSchema.validate(req.body)
+        if(error) res.status(400).send(error.details[0].message);
+
         const {name, username, email} = req.body;
         const response = createUserController(name, username, email)
+
         res.status(201).send(response)
     } catch (error) {
         res.status(400).send({ Error: error.message })
