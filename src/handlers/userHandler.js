@@ -25,7 +25,7 @@ const createUserHandler = (req, res) => {
         const response = createUserController(name, username, email)
         res.status(201).send(response)
     } catch (error) {
-        res.status(418).send({ Error: error.messge })
+        res.status(418).send({ Error: error.message })
     }
 }
 
