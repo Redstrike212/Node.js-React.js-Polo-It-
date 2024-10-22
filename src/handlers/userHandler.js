@@ -27,9 +27,6 @@ const createUserHandler = (req, res) => {
     } catch (error) {
         res.status(418).send({ Error: error.messge })
     }
-    const {name, username, email} = req.body;
-    const response = createUserController(name, username, email)
-    res.status(201).send(response)
 }
 
 const updateUserHandler = (req, res) => {
