@@ -8,10 +8,12 @@ const createUserController = (name, username, email) => {
     return newUser
 }
 const getAllUserController = () => {
+    if(!users.length) throw new Error("No hay usuarios")
     return users
 }
 const getUserByNameController = (name) => {
     const usersByName = users.filter(user => user.name === name)
+    if(!usersByName.length) throw new Error("No existe el usuario")
     return usersByName
 }
 
