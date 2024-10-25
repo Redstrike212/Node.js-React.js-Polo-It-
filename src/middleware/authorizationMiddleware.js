@@ -1,11 +1,9 @@
-const authorizeAdmin = (res, req, next) => {
+const authorizeAdmin = (req, res, next) => {
     const user = req.user
     if (!user || user.role !== 'admin') {
-        return res.status(401).send('Acceso denegado')
+        res.status(403).send('Acceso denegado')
     }
     next()
 }
 
-module.exports = {
-    authorizeAdmin
-}
+module.exports = authorizeAdmin
