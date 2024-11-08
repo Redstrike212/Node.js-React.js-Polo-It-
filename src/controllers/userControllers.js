@@ -1,39 +1,34 @@
-const users = require('../db/database')
+const User = require('../models/User')
 const   bcrypt = require('bcryptjs')
 
 const createUserController = async (name, username, email, password, role) => {
-    const id = users.length + 1
     const hashPassword = await bcrypt.hash(password, 10)
-    console.log(hashPassword)
-    const newUser = { id, name, username, email, password: hashPassword, role }
-    users.push(newUser)
+    const newUser = new User({ name, username, email, password: hashPassword, role })
+    newUser.save()
     return newUser
 }
-const getAllUserController = () => {
-    if(!users.length) throw new Error("No hay usuarios")
-    return users
+const getAllUserController = async () => {
+    if(!User.length) throw new Error("No hay usuarios")
+    return await User.find()
 }
-const getUserByNameController = (name) => {
-    const usersByName = users.filter(user => user.name === name)
+const getUserByNameController = async (name) => {
+    const usersByName = await User.find({name})
     if(!usersByName.length) throw new Error("No existe el usuario")
     return usersByName
 }
 
-const getUserByIdController = (id) => {
-    const userById = users.find(user => user.id === Number(id))
+const getUserByIdController = async (id) => {
+    const userById = await User.findById(id)
     return userById
 }
 
-const updateUserController = (id, name, username, email) => {
-    const newUser = { id, name, username, email };
-    const userById = users.find(user => user.id === Number(id));
-    if(userById) {
-        Object.assign(userById, newUser)
-    }
-    return userById
+const updateUserController = async (id, name, username, email) => {
+    const newUser = { name, username, email };
+    const updateUser = new User.findByIdAndUpdate(id, newUser, { new: true })
+    return updateUser
 }
 
-const deleteUserController = (id) => {
+const deleteUserController = async (id) => {
     const index = users.findIndex(user => user.id === Number(id))
     let deleteUser = null
     if(index !== -1) {

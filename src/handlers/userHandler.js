@@ -10,14 +10,14 @@ const userSchema = Joi.object({
 })  
 
 
-const getAllUserHandler = (req, res) => {
+const getAllUserHandler = async (req, res) => {
     try {
         const {name} = req.query
         if (name) {
-            const response = getUserByNameController(name)
+            const response = await getUserByNameController(name)
             res.status(200).send(response)
         } else {
-            const response = getAllUserController()
+            const response = await getAllUserController()
             console.log(response)
             res.status(200).send(response)
         }
@@ -26,10 +26,10 @@ const getAllUserHandler = (req, res) => {
     }
 }
 
-const getOneHandler = (req, res) => {
+const getOneHandler = async (req, res) => {
     try {
         const { id } = req.params
-        const response = getUserByIdController(id)
+        const response = await getUserByIdController(id)
         res.status(200).send(response)
     } catch (error) {
         res.status(400).send({ Error: error.message })
@@ -39,12 +39,19 @@ const getOneHandler = (req, res) => {
 const createUserHandler = async (req, res) => {
     try {
         const {error} = userSchema.validate(req.body)
-        if(error) res.status(400).send(error.details[0].message);
+        if (error) {
+            res.status(400).send(error.details[0].message)
+        };
 
-        const {name, username, email, password, role} = req.body;
-        const response = await createUserController(name, username, email, password, role)
-
-        res.status(201).send(response)
+        const { name, username, email, password, role } = req.body;
+        const response = await createUserController(
+            name,
+            username, 
+            email, 
+            password, 
+            role
+        )
+        return response
     } catch (error) {
         res.status(400).send({ Error: error.message })
     }

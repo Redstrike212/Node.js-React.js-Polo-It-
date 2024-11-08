@@ -1,7 +1,7 @@
 const jwt = require('jsonwebtoken')
 
 const verifyToken = (req, res, next) => {
-    const token = req.header("Authorization")  && req.header('Authorization').split(' ')[1]
+    const token = req.header("Authorization") && req.header('Authorization').split(' ')[1]
     if(!token) {
         return res.status(404).send("Token requerido")
     }
@@ -12,7 +12,6 @@ const verifyToken = (req, res, next) => {
         req.user = decode
         next()
     })
-    next()
 }
 
 module.exports = {
