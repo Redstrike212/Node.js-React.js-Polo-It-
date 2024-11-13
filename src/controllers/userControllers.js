@@ -24,16 +24,12 @@ const getUserByIdController = async (id) => {
 
 const updateUserController = async (id, name, username, email) => {
     const newUser = { name, username, email };
-    const updateUser = new User.findByIdAndUpdate(id, newUser, { new: true })
+    const updateUser = await User.findByIdAndUpdate(id, newUser, { new: true })
     return updateUser
 }
 
 const deleteUserController = async (id) => {
-    const index = users.findIndex(user => user.id === Number(id))
-    let deleteUser = null
-    if(index !== -1) {
-        [deleteUser] = users.splice(index, 1)
-    }
+    let deleteUser = await User.findByIdAndDelete(id)
     return deleteUser
 }
 

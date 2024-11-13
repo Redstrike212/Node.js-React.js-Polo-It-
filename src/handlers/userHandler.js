@@ -18,7 +18,6 @@ const getAllUserHandler = async (req, res) => {
             res.status(200).send(response)
         } else {
             const response = await getAllUserController()
-            console.log(response)
             res.status(200).send(response)
         }
     } catch (error) {
@@ -57,23 +56,22 @@ const createUserHandler = async (req, res) => {
     }
 }
 
-const updateUserHandler = (req, res) => {
+const updateUserHandler = async (req, res) => {
     try {
         const { id } = req.params
         const {name, username, email} = req.body;
-        const response = updateUserController(id, name, username, email)
+        const response = await updateUserController(id, name, username, email)
         res.send(response)
     } catch (error) {
         res.status(400).send({ Error: error.message })
     }
 }
 
-const deleteUserHandler = (req, res) => {
+const deleteUserHandler = async (req, res) => {
     try {
         const { id } = req.params
-        const response = deleteUserController(id);
-        console.log(response)
-        res.send('Eliminando un Usuario')
+        const response = await deleteUserController(id);
+        res.send(response)
     } catch (error) {
         res.status(400).send({ Error: error.message })
     }
