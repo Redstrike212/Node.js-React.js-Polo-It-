@@ -1,5 +1,6 @@
 const User = require('../models/User')
-const   bcrypt = require('bcryptjs')
+const Post = require('../models/Post')
+const bcrypt = require('bcryptjs')
 
 const createUserController = async (name, username, email, password, role) => {
     const hashPassword = await bcrypt.hash(password, 10)
@@ -19,7 +20,8 @@ const getUserByNameController = async (name) => {
 
 const getUserByIdController = async (id) => {
     const userById = await User.findById(id)
-    return userById
+    const userPosts = await Post.find({ userId: id})
+    return {user: userById, post: userPosts}
 }
 
 const updateUserController = async (id, name, username, email) => {
