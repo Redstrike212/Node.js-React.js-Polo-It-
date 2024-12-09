@@ -1,6 +1,6 @@
 const { Router } = require('express');
 const usersRouter = require('./usersRoutes');
-const postsRouter = require('./postsRoutes');
+const productsRouter = require('./productsRoutes');
 const authRoutes = require('./authRoutes');
 const mainRouter = Router()
 
@@ -9,7 +9,7 @@ const mainRouter = Router()
 mainRouter.use('/auth', authRoutes)
 // Rutas
 mainRouter.use('/users', usersRouter)
-// Posts
-mainRouter.use('/posts', postsRouter)
+// Products
+mainRouter.use('/products', productsRouter)
 
 module.exports = mainRouter

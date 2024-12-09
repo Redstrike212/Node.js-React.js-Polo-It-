@@ -1,5 +1,4 @@
 const User = require('../models/User')
-const Post = require('../models/Post')
 const bcrypt = require('bcryptjs')
 
 const createUserController = async (name, username, email, password, role) => {
