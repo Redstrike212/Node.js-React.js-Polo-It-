@@ -2,19 +2,19 @@ const { response } = require("express")
 const { createUserController, getAllUserController, getUserByNameController, getUserByIdController, updateUserController, deleteUserController } = require("../controllers/userControllers")
 const Joi = require('joi')
 const userSchema = Joi.object({
-    name:   Joi.string().min(3).required(),
-    username: Joi.string().min(3).required(),
-    email: Joi.string().email().required(),
+    nombre:   Joi.string().min(3).required(),
+    apellido: Joi.string().min(3).required(),
+    correo: Joi.string().email().required(),
     password: Joi.string().pattern(/^\d{6}$/).required(),
-    role: Joi.string().valid('admin', 'user').required()
+    id_rol: Joi.number().valid(1, 2).default(2),
 })  
 
 
 const getAllUserHandler = async (req, res) => {
     try {
-        const {name} = req.query
-        if (name) {
-            const response = await getUserByNameController(name)
+        const { nombre } = req.query
+        if (nombre) {
+            const response = await getUserByNameController(nombre)
             res.status(200).send(response)
         } else {
             const response = await getAllUserController()
@@ -27,8 +27,8 @@ const getAllUserHandler = async (req, res) => {
 
 const getOneHandler = async (req, res) => {
     try {
-        const { id } = req.params
-        const response = await getUserByIdController(id)
+        const { id_rol } = req.params
+        const response = await getUserByIdController(id_rol)
         res.status(200).send(response)
     } catch (error) {
         res.status(400).send({ Error: error.message })
@@ -42,14 +42,15 @@ const createUserHandler = async (req, res) => {
             res.status(400).send(error.details[0].message)
         };
 
-        const { name, username, email, password, role } = req.body;
+        const { nombre, apellido, correo, password, id_rol = 2 } = req.body;
         const response = await createUserController(
-            name,
-            username, 
-            email, 
+            nombre,
+            apellido, 
+            correo, 
             password, 
-            role
+            id_rol
         )
+        res.json(response)
         return response
     } catch (error) {
         res.status(400).send({ Error: error.message })
@@ -58,9 +59,9 @@ const createUserHandler = async (req, res) => {
 
 const updateUserHandler = async (req, res) => {
     try {
-        const { id } = req.params
-        const {name, username, email} = req.body;
-        const response = await updateUserController(id, name, username, email)
+        const { id_rol } = req.params
+        const {nombre, apellido, correo} = req.body;
+        const response = await updateUserController(id_rol, nombre, apellido, correo)
         res.send(response)
     } catch (error) {
         res.status(400).send({ Error: error.message })
@@ -69,8 +70,8 @@ const updateUserHandler = async (req, res) => {
 
 const deleteUserHandler = async (req, res) => {
     try {
-        const { id } = req.params
-        const response = await deleteUserController(id);
+        const { id_rol } = req.params
+        const response = await deleteUserController(id_rol);
         res.send(response)
     } catch (error) {
         res.status(400).send({ Error: error.message })

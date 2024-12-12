@@ -1,61 +1,43 @@
-const Sequelize = require('sequelize');
-module.exports = function(sequelize, DataTypes) {
-  return sequelize.define('usuario', {
-    id_usuario: {
-      type: DataTypes.INTEGER,
-      allowNull: false,
-      primaryKey: true
+const { DataTypes } = require('sequelize');
+const sequelize = require('../db/database');
+
+const usuario = sequelize.define('usuario', {
+  id_usuario: {
+    type: DataTypes.INTEGER,
+    autoIncrement: true,
+    primaryKey: true
+  },
+  nombre: {
+    type: DataTypes.STRING(100),
+    allowNull: false
+  },
+  apellido: {
+    type: DataTypes.STRING(100),
+    allowNull: false
+  },
+  correo: {
+    type: DataTypes.STRING(100),
+    allowNull: false,
+    unique: "usuario_correo_key"
+  },
+  password: {
+    type: DataTypes.STRING(100),
+    allowNull: false
+  },
+  id_rol: {
+    type: DataTypes.INTEGER,
+    references: {
+      model: 'rols',
+      key: 'id_rol'
     },
-    nombre: {
-      type: DataTypes.STRING(100),
-      allowNull: false
-    },
-    apellido: {
-      type: DataTypes.STRING(100),
-      allowNull: false
-    },
-    correo: {
-      type: DataTypes.STRING(100),
-      allowNull: false,
-      unique: "usuario_correo_key"
-    },
-    password: {
-      type: DataTypes.STRING(100),
-      allowNull: false
-    },
-    id_rol: {
-      type: DataTypes.INTEGER,
-      allowNull: true,
-      defaultValue: 1,
-      references: {
-        model: 'rol',
-        key: 'id_rol'
-      }
-    },
-    estado: {
-      type: DataTypes.BOOLEAN,
-      allowNull: false
-    }
-  }, {
-    sequelize,
-    tableName: 'usuario',
-    schema: 'public',
-    timestamps: false,
-    indexes: [
-      {
-        name: "usuario_correo_key",
-        unique: true,
-        fields: [
-          { name: "correo" },
-        ]
-      },
-      {
-        name: "usuario_pkey",
-        unique: true,
-        fields: [
-          { name: "id_usuario" },
-        ]
-      },
-    ]
-  });
-};
+    defaultValue: 2,
+  },
+  estado: {
+    type: DataTypes.BOOLEAN,
+    allowNull: false,
+    defaultValue: true
+  }
+})
+
+
+module.exports = usuario

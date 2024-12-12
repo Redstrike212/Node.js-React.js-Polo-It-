@@ -3,9 +3,9 @@ const { createProductController, getAllProductController, getProductByTitleContr
 
 const getAllProductHandler = async (req, res) => {
     try {
-        const { title } = req.query
-        if (title) {
-            const response = await getProductByTitleController(title)
+        const { nombre } = req.query
+        if (nombre) {
+            const response = await getProductByTitleController(nombre)
             res.send(response)
         } else {
             const response = await getAllProductController()
@@ -27,8 +27,8 @@ const getOneProductHandler = async (req, res) => {
 }
 const createProductHandler = async (req, res) => {
     try {
-        const { title, body, userId } = req.body
-        const response = await createProductController(title, body, userId)
+        const { id_categoria, id_mascota, nombre } = req.body
+        const response = await createProductController(id_categoria, id_mascota, nombre)
         res.send(response)
     } catch (error) {
         res.status(400).send({ Error: error.message })

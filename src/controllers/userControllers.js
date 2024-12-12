@@ -1,30 +1,30 @@
-const User = require('../models/User')
+const Usuario = require('../models/usuario')
 const bcrypt = require('bcryptjs')
 
-const createUserController = async (name, username, email, password, role) => {
+const createUserController = async (nombre, apellido, correo, password, id_rol = 2) => {
     const hashPassword = await bcrypt.hash(password, 10)
-    const newUser = new User({ name, username, email, password: hashPassword, role })
-    newUser.save()
+    const newUser = await Usuario.create({ nombre, apellido, correo, password: hashPassword, id_rol })
     return newUser
 }
 const getAllUserController = async () => {
-    if(!User.length) throw new Error("No hay usuarios")
-    return await User.find()
+    return await Usuario.findAll()
 }
-const getUserByNameController = async (name) => {
-    const usersByName = await User.find({name})
-    if(!usersByName.length) throw new Error("No existe el usuario")
+const getUserByNameController = async (nombre) => {
+    const usersByName = await Usuario.findOne({
+        where: {
+            nombre
+        }
+    })
     return usersByName
 }
 
-const getUserByIdController = async (id) => {
-    const userById = await User.findById(id)
-    const userPosts = await Post.find({ userId: id})
-    return {user: userById, post: userPosts}
+const getUserByIdController = async (id_usuario) => {
+    const userById = await Usuario.findById(id_usuario)
+    return userById
 }
 
-const updateUserController = async (id, name, username, email) => {
-    const newUser = { name, username, email };
+const updateUserController = async (id, nombre, apellido, correo) => {
+    const newUser = { nombre, apellido, correo };
     const updateUser = await User.findByIdAndUpdate(id, newUser, { new: true })
     return updateUser
 }
@@ -33,6 +33,8 @@ const deleteUserController = async (id) => {
     let deleteUser = await User.findByIdAndDelete(id)
     return deleteUser
 }
+
+
 
 module.exports = {
     createUserController,

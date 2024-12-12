@@ -2,21 +2,21 @@ const Product = require('../models/producto')
 
 const getAllProductController = async () => {
     return await Product.find().populate({
-        path: "userId",
-        select: "name -_id",
+        path: "id_producto",
+        select: "nombre",
     })
 }
 
-const getProductByIdController = async (id) => {
-    const productById = await Product.findById(id).populate({
-        path: "userId",
-        select: "name -_id",
+const getProductByIdController = async (id_producto) => {
+    const productById = await Product.findById(id_producto).populate({
+        path: "id_producto",
+        select: "nombre",
     })
     return productById
 }
 
-const getProductByTitleController = async (title) => {
-    return await Product.find({title})
+const getProductByTitleController = async (nombre) => {
+    return await Product.find({nombre})
 }
 const createProductController = async (title, body, userId) => {
     const newProduct = await Product.create({ title, body, userId })

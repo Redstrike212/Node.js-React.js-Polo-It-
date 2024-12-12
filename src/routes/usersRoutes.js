@@ -7,9 +7,9 @@ const usersRouter = Router()
 // Rutas
 usersRouter.get('/', getAllUserHandler)
 usersRouter.get('/:id', getOneHandler)
-usersRouter.post('/', verifyToken, authorizeAdmin, createUserHandler)
-usersRouter.put('/:id', verifyToken, authorizeAdmin, updateUserHandler)
-usersRouter.delete('/:id', verifyToken, authorizeAdmin, deleteUserHandler)
+usersRouter.post('/', createUserHandler)
+usersRouter.put('/:id', updateUserHandler)
+usersRouter.delete('/:id', deleteUserHandler)
 
 
 module.exports = usersRouter;
