@@ -1,5 +1,6 @@
 const server = require('./src/server');
 const sequelize = require('./src/db/database');
+require('./src/models/venta')
 require('dotenv').config()
 
 async function main() {
