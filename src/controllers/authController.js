@@ -3,36 +3,43 @@ const bcrypt = require('bcryptjs')
 const jwt = require('jsonwebtoken')
 
 const  registerController = async (userData) => {
-    const hashPassword = await bcrypt.genSalt(10)
-    userData.password = await bcrypt.hash(userData.password, hashPassword)
-    
-    const [user, created] = await Usuario.findOrCreate({
+    const salt = await bcrypt.genSalt(10)
+    userData.password = await bcrypt.hash(userData.password, salt)
+
+    const existingUser = await Usuario.findOne({
         where: { correo: userData.correo },
-        defaults: {
-            ...userData,
-            id_rol: 2
-        }
     })
-    if(created) {
+    if(existingUser) {
         throw new Error('Correo ya registrado')
     }
-
-    return user
+    const newUser = await Usuario.create(userData)
+    return newUser
 }
-const loginController = async (email, password) => {
-    const user = await User.findOne({email})
+const loginController = async (correo, password) => {
+    const user = await Usuario.findOne({ where: {correo} })
     if(!user) {
         throw new Error('El usuario no esta registrado')
     }
     const passwordMatch = await bcrypt.compare(password, user.password)
     if(!passwordMatch) {
+        console.log(user.password);
+        console.log(password);
         throw new Error('Contraseña incorrecta')
     }
-    const token = jwt.sign({id: user.id, role: user.role}, 'my_secret_key', {
+    const token = jwt.sign({id_usuario: user.id_usuario, correo: user.correo, id_rol: user.id_rol}, 'my_secret_key', {
         expiresIn: "1h"
     })
-    const {password: _, ...userWhiouthPassword} = user
-    return{message: 'Inicio de sesion Exitosa', token, user: userWhiouthPassword}
+    return {
+        message: 'Inicio de sesión exitoso',
+        user: {
+            id_usuario: user.id_usuario,
+            nombre: user.nombre,
+            apellido: user.apellido,
+            correo: user.correo,
+            id_rol: user.id_rol,
+        },
+        token,
+    };
 }
 
 module.exports = {
