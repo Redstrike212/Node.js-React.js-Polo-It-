@@ -6,8 +6,8 @@ const createCategoriaController = async (nombre) => {
             order: [['id_categoria', 'DESC']],
         });
         const nuevoId = ultimaCategoria ? ultimaCategoria.id_categoria + 1 : 1;
-        const nuevaMascota = await Mascota.create({ id_categoria: nuevoId ,nombre });
-        return nuevaMascota;
+        const nuevaCategoria = await Categoria.create({ id_categoria: nuevoId ,nombre });
+        return nuevaCategoria;
     } catch (error) {
         throw new Error(error.message);
     }

@@ -1,4 +1,6 @@
 const { response } = require("express")
+const Categoria = require('../models/categoria')
+const Mascota = require('../models/mascota')
 const { createProductController, getAllProductController, getProductByTitleController, getProductByIdController } = require("../controllers/productControllers")
 
 const getAllProductHandler = async (req, res) => {
@@ -18,8 +20,8 @@ const getAllProductHandler = async (req, res) => {
 }
 const getOneProductHandler = async (req, res) => {
     try {
-        const { id } = req.params
-        const response = await getProductByIdController(id)
+        const { id_producto } = req.params
+        const response = await getProductByIdController(id_producto)
         res.send(response)
     } catch (error) {
         res.status(400).send({ Error: error.message })
@@ -27,8 +29,19 @@ const getOneProductHandler = async (req, res) => {
 }
 const createProductHandler = async (req, res) => {
     try {
-        const { id_categoria, id_mascota, nombre } = req.body
-        const response = await createProductController(id_categoria, id_mascota, nombre)
+        const { id_categoria, id_mascota, nombre, estado = true, descripcion } = req.body
+
+        const categoriaExiste = await Categoria.findByPk(id_categoria)
+        if (!categoriaExiste) {
+            throw new Error(`La categoria con id ${id_categoria} no existe`);
+        }
+
+        const mascotaExiste = await Mascota.findByPk(id_mascota)
+        if (!mascotaExiste) {
+            throw new Error(`La mascota con id ${id_mascota} no existe`);
+        }
+
+        const response = await createProductController(id_categoria, id_mascota, nombre, estado, descripcion)
         res.send(response)
     } catch (error) {
         res.status(400).send({ Error: error.message })

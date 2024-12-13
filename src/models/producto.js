@@ -1,53 +1,41 @@
-const { Sequelize } = require('sequelize');
+const { DataTypes } = require('sequelize');
+const sequelize = require("../db/database")
 
-module.exports = function(sequelize, DataTypes) {
-  return sequelize.define('producto', {
-    id_producto: {
-      type: DataTypes.INTEGER,
-      allowNull: false,
-      primaryKey: true
-    },
-    id_categoria: {
-      type: DataTypes.INTEGER,
-      allowNull: false,
-      references: {
-        model: 'categoria',
-        key: 'id_categoria'
-      }
-    },
-    id_mascota: {
-      type: DataTypes.INTEGER,
-      allowNull: true,
-      references: {
-        model: 'mascota',
-        key: 'id_mascota'
-      }
-    },
-    nombre: {
-      type: DataTypes.STRING(100),
-      allowNull: false
-    },
-    estado: {
-      type: DataTypes.BOOLEAN,
-      allowNull: false
-    },
-    descripcion: {
-      type: DataTypes.TEXT,
-      allowNull: true
+const Producto = sequelize.define('producto', {
+  id_producto: {
+    type: DataTypes.INTEGER,
+    autoIncrement: true,
+    primaryKey: true,
+    allowNull: false
+  },
+  id_categoria: {
+    type: DataTypes.INTEGER,
+    allowNull: false,
+    references: {
+      model: 'categoria',
+      key: 'id_categoria'
     }
-  }, {
-    sequelize,
-    tableName: 'producto',
-    schema: 'public',
-    timestamps: false,
-    indexes: [
-      {
-        name: "producto_pkey",
-        unique: true,
-        fields: [
-          { name: "id_producto" },
-        ]
-      },
-    ]
-  });
-};
+  },
+  id_mascota: {
+    type: DataTypes.INTEGER,
+    allowNull: true,
+    references: {
+      model: 'mascota',
+      key: 'id_mascota'
+    }
+  },
+  nombre: {
+    type: DataTypes.STRING(100),
+    allowNull: false
+  },
+  estado: {
+    type: DataTypes.BOOLEAN,
+    defaultValue: true
+  },
+  descripcion: {
+    type: DataTypes.TEXT,
+    allowNull: true
+  }
+})
+
+module.exports = Producto

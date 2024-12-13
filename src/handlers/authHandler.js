@@ -1,12 +1,13 @@
 const Joi = require('joi');
 const { registerController, loginController } = require('../controllers/authController');
 const userSchema = Joi.object({
-    name:   Joi.string().min(3).required(),
-    username: Joi.string().min(3).required(),
-    email: Joi.string().email().required(),
+    nombre:   Joi.string().min(3).required(),
+    apellido: Joi.string().min(3).required(),
+    correo: Joi.string().email().required(),
     password: Joi.string().pattern(/^\d{6}$/).required(),
-    role: Joi.string().valid('admin', 'user')
+    id_rol: Joi.number().valid(1, 2).default(2),
 })  
+
 
 
 const registerHandler = async (req, res) => {

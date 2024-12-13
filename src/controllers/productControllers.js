@@ -1,25 +1,32 @@
-const Product = require('../models/producto')
+const Producto = require('../models/producto')
+
 
 const getAllProductController = async () => {
-    return await Product.find().populate({
-        path: "id_producto",
-        select: "nombre",
-    })
+    return await Producto.findAll()
 }
 
 const getProductByIdController = async (id_producto) => {
-    const productById = await Product.findById(id_producto).populate({
-        path: "id_producto",
-        select: "nombre",
-    })
-    return productById
+    return await Producto.findByPk(id_producto)
 }
 
 const getProductByTitleController = async (nombre) => {
-    return await Product.find({nombre})
+    return await Producto.findOne({
+        where: {
+            nombre
+        }
+    })
 }
-const createProductController = async (title, body, userId) => {
-    const newProduct = await Product.create({ title, body, userId })
+const createProductController = async (id_categoria, id_mascota, nombre, estado = true, descripcion) => {
+    const maxIdProduct = await Producto.max('id_producto')
+    const newId = maxIdProduct ? maxIdProduct + 1 : 1
+    const newProduct = await Producto.create({ 
+        id_producto: newId,
+        id_categoria, 
+        id_mascota, 
+        nombre,
+        estado,
+        descripcion
+    })
     return newProduct
 }
 
