@@ -6,10 +6,10 @@ const usersRouter = Router()
 
 // Rutas
 usersRouter.get('/', getAllUserHandler)
-usersRouter.get('/:id', getOneHandler)
+usersRouter.get('/:id_usuario', getOneHandler)
 usersRouter.post('/', createUserHandler)
-usersRouter.put('/:id', updateUserHandler)
-usersRouter.delete('/:id', deleteUserHandler)
+usersRouter.put('/:id_usuario', updateUserHandler)
+usersRouter.delete('/:id_usuario', deleteUserHandler)
 
 
 module.exports = usersRouter;

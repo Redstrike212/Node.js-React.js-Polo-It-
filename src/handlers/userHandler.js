@@ -1,4 +1,5 @@
 const { response } = require("express")
+const Usuario = require('../models/usuario')
 const { createUserController, getAllUserController, getUserByNameController, getUserByIdController, updateUserController, deleteUserController } = require("../controllers/userControllers")
 const Joi = require('joi')
 const userSchema = Joi.object({
@@ -27,8 +28,8 @@ const getAllUserHandler = async (req, res) => {
 
 const getOneHandler = async (req, res) => {
     try {
-        const { id_rol } = req.params
-        const response = await getUserByIdController(id_rol)
+        const { id_usuario } = req.params
+        const response = await getUserByIdController(id_usuario)
         res.status(200).send(response)
     } catch (error) {
         res.status(400).send({ Error: error.message })
@@ -59,9 +60,9 @@ const createUserHandler = async (req, res) => {
 
 const updateUserHandler = async (req, res) => {
     try {
-        const { id_rol } = req.params
-        const {nombre, apellido, correo} = req.body;
-        const response = await updateUserController(id_rol, nombre, apellido, correo)
+        const { id_usuario } = req.params
+        const {nombre, apellido, correo, password} = req.body;
+        const response = await updateUserController(id_usuario, nombre, apellido, correo, password)
         res.send(response)
     } catch (error) {
         res.status(400).send({ Error: error.message })
@@ -70,8 +71,8 @@ const updateUserHandler = async (req, res) => {
 
 const deleteUserHandler = async (req, res) => {
     try {
-        const { id_rol } = req.params
-        const response = await deleteUserController(id_rol);
+        const { id_usuario } = req.params
+        const response = await deleteUserController(id_usuario);
         res.send(response)
     } catch (error) {
         res.status(400).send({ Error: error.message })

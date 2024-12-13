@@ -3,9 +3,9 @@ const { getAllProductHandler, getOneProductHandler, createProductHandler, update
 const productsRouter = Router()
 
 productsRouter.get('/', getAllProductHandler)
-productsRouter.get('/:id', getOneProductHandler)
+productsRouter.get('/:id_producto', getOneProductHandler)
 productsRouter.post('/', createProductHandler)
-productsRouter.put('/:id', updateProductHandler)
-productsRouter.delete('/:id', deleteProductHandler)
+productsRouter.put('/:id_producto', updateProductHandler)
+productsRouter.delete('/:id_producto', deleteProductHandler)
 
 module.exports = productsRouter
