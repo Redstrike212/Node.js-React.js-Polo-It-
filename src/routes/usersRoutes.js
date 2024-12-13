@@ -1,7 +1,5 @@
 const { Router } = require('express');
 const { getAllUserHandler, getOneHandler, createUserHandler, updateUserHandler, deleteUserHandler } = require('../handlers/userHandler');
-const { verifyToken } = require('../middleware/verifyMiddleware');
-const authorizeAdmin = require('../middleware/authorizationMiddleware');
 const usersRouter = Router()
 
 // Rutas
