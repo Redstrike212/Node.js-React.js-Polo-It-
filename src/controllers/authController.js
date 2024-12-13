@@ -1,18 +1,23 @@
-const User = require('../models/User')
-const users = require('../db/database')
+const Usuario = require('../models/usuario')
 const bcrypt = require('bcryptjs')
 const jwt = require('jsonwebtoken')
 
-const registerController = async (name, username, email, password, role = 'user') => {
-    // const userExists = users.some(user => user.email === email)
-    // console.log(userExists)
-    // if(userExists) {
-    //     throw new Error('Usuario registrado')
-    // }
-    const hashPassword = await bcrypt.hash(password, 10)
-    const newUser = new User({ name, username, email, password: hashPassword, role })
-    newUser.save()
-    return newUser
+const  registerController = async (userData) => {
+    const hashPassword = await bcrypt.genSalt(10)
+    userData.password = await bcrypt.hash(userData.password, hashPassword)
+    
+    const [user, created] = await Usuario.findOrCreate({
+        where: { correo: userData.correo },
+        defaults: {
+            ...userData,
+            id_rol: 2
+        }
+    })
+    if(created) {
+        throw new Error('Correo ya registrado')
+    }
+
+    return user
 }
 const loginController = async (email, password) => {
     const user = await User.findOne({email})

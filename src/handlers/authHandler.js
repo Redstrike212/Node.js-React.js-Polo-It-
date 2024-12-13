@@ -15,8 +15,8 @@ const registerHandler = async (req, res) => {
         const {error} = userSchema.validate(req.body)
         if(error) res.status(400).send(error.details[0].message);
 
-        const {name, username, email, password, role} = req.body;
-        const response = await registerController(name, username, email, password, role)
+        const {nombre, apellido, correo, password, id_rol} = req.body;
+        const response = await registerController({ nombre, apellido, correo, password, id_rol })
 
         res.status(201).send(response)
     } catch (error) {
@@ -26,8 +26,8 @@ const registerHandler = async (req, res) => {
 
 const loginHandler = async (req, res) => {
     try {
-        const {email, password} = req.body
-        const response = await loginController(email, password)
+        const {correo, password} = req.body
+        const response = await loginController(correo, password)
         res.send(response)
     } catch (error) {
         res.status(400).send({ Error: error.message })

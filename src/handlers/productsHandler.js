@@ -1,7 +1,7 @@
 const { response } = require("express")
 const Categoria = require('../models/categoria')
 const Mascota = require('../models/mascota')
-const { createProductController, getAllProductController, getProductByTitleController, getProductByIdController } = require("../controllers/productControllers")
+const { createProductController, getAllProductController, getProductByTitleController, getProductByIdController, updateProductController } = require("../controllers/productControllers")
 
 const getAllProductHandler = async (req, res) => {
     try {
@@ -47,8 +47,32 @@ const createProductHandler = async (req, res) => {
         res.status(400).send({ Error: error.message })
     }
 }
-const updateProductHandler = (req, res) => {
-    res.send('Modificaste el Producto')
+const updateProductHandler = async (req, res) => {
+    try {
+        const { id_producto } = req.params
+        const { id_categoria, id_mascota, nombre, estado = true, descripcion } = req.body
+
+        const categoriaExiste = await Categoria.findByPk(id_categoria)
+        if (!categoriaExiste) {
+            throw new Error(`La categoria con id ${id_categoria} no existe`);
+        }
+
+        const mascotaExiste = await Mascota.findByPk(id_mascota)
+        if (!mascotaExiste) {
+            throw new Error(`La mascota con id ${id_mascota} no existe`);
+        }
+
+        const response = await updateProductController(id_producto, {
+            id_categoria,
+            id_mascota, 
+            nombre, 
+            estado: estado !== undefined ? estado : true, 
+            descripcion 
+        })
+        res.send(response)
+    } catch (error) {
+        
+    }
 }
 const deleteProductHandler = (req, res) => {
     res.send('Eliminaste el Producto')

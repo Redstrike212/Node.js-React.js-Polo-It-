@@ -30,10 +30,26 @@ const createProductController = async (id_categoria, id_mascota, nombre, estado 
     return newProduct
 }
 
+const updateProductController = async (id_producto, updateData) => {
+    const producto = await Producto.findByPk(id_producto)
+
+    if (updateData.estado === undefined) {
+        updateData.estado = true
+    }
+
+    await producto.update(updateData)
+    return producto
+}
+
+const deleteProductController = async () => {
+    
+}
+
 
 module.exports = {
     createProductController,
     getAllProductController,
     getProductByTitleController,
-    getProductByIdController
+    getProductByIdController,
+    updateProductController
 }
